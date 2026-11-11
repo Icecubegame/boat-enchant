@@ -30,15 +30,28 @@ public class BoatEnchant implements ModInitializer {
 	public void onInitialize() {
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
 			if (BuiltInLootTables.BURIED_TREASURE.equals(key)) {
-				Optional<Holder.Reference<Enchantment>> entry = registries.get(LAND_ENCHANT_ID);
-				if (entry.isPresent()) {
-					Holder.Reference<Enchantment> enchant = entry.get();
-					LootPool.Builder pool = LootPool.lootPool()
-							.add(LootItem.lootTableItem(Items.BOOK))
-							.apply(new SetEnchantmentsFunction.Builder().withEnchantment(enchant, ContextIntProviders.exactly(1)))
-							.when(LootItemRandomChanceCondition.randomChance(0.5f));
-					tableBuilder.withPool(pool);
+				Optional<Holder.Reference<Enchantment>> landEntry = registries.get(LAND_ENCHANT_ID);
+				Optional<Holder.Reference<Enchantment>> stepEntry = registries.get(STEP_ENCHANT_ID);
+
+				LootPool.Builder pool = LootPool.lootPool();
+
+				if (landEntry.isPresent()) {
+					Holder.Reference<Enchantment> landEnchant = landEntry.get();
+					pool
+							.add(LootItem.lootTableItem(Items.BOOK)
+									.apply(new SetEnchantmentsFunction.Builder().withEnchantment(landEnchant, ContextIntProviders.exactly(1))));
 				}
+
+				if (stepEntry.isPresent()) {
+					Holder.Reference<Enchantment> stepEnchant = stepEntry.get();
+					pool
+							.add(LootItem.lootTableItem(Items.BOOK)
+									.apply(new SetEnchantmentsFunction.Builder().withEnchantment(stepEnchant, ContextIntProviders.exactly(1))));
+				}
+
+				pool.setRolls(ContextIntProviders.exactly(1))
+						.when(LootItemRandomChanceCondition.randomChance(0.5f));
+				tableBuilder.withPool(pool);
 			}
 		});
 	}

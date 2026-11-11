@@ -3,15 +3,15 @@
 	"id": "boat-enchant",
 	"version": "${version}",
 	"name": "Boat Enchant",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Adds the Land enchantment to boats. Basically it made your speed on land same as on water. You can find the enchantment in buried treasure.",
 	"authors": [
-		"Me!"
+		"Icecubegame"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/boat-enchant",
+		"sources": "https://github.com/Icecubegame/boat-enchant"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/boat-enchant/icon.png",
 	"environment": "*",
 	"entrypoints": {
