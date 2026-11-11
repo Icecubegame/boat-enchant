@@ -24,6 +24,7 @@ public class BoatEnchant implements ModInitializer {
 	public static final String MOD_ID = "boat-enchant";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final ResourceKey<Enchantment> LAND_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("land"));
+	public static final ResourceKey<Enchantment> STEP_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("step"));
 
 	@Override
 	public void onInitialize() {

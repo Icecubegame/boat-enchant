@@ -26,14 +26,25 @@ public abstract class BoatItemMixin {
     private AbstractBoat boatEnchant$getBoat(AbstractBoat boat, @Local Level level, @Local ItemStack itemStack) {
 
         if (boat != null) {
-            ResourceKey<Enchantment> LAND_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("land"));
-            Optional<Holder.Reference<Enchantment>> entry = level.registryAccess().get(LAND_ENCHANT_ID);
+            Optional<Holder.Reference<Enchantment>> entry;
+            entry = level.registryAccess().get(BoatEnchant.LAND_ENCHANT_ID);
             if (entry.isPresent()) {
                 Holder.Reference<Enchantment> enchant = entry.get();
                 int levels =  EnchantmentHelper.getItemEnchantmentLevel(enchant, itemStack);
                 if (levels > 0) {
                     if (boat instanceof BoatMixinAccessor) {
                         ((BoatMixinAccessor)boat).setHasLandEnchant(true);
+                    }
+                }
+            }
+
+            entry = level.registryAccess().get(BoatEnchant.STEP_ENCHANT_ID);
+            if (entry.isPresent()) {
+                Holder.Reference<Enchantment> enchant = entry.get();
+                int levels =  EnchantmentHelper.getItemEnchantmentLevel(enchant, itemStack);
+                if (levels > 0) {
+                    if (boat instanceof BoatMixinAccessor) {
+                        ((BoatMixinAccessor)boat).setHasStepEnchant(true);
                     }
                 }
             }

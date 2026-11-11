@@ -13,6 +13,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.item.Item;
@@ -27,11 +29,11 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 
 @Mixin(AbstractBoat.class)
 public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccessor {
 	private static final EntityDataAccessor<Boolean> DATA_ID_HAS_LAND_ENCHANT = SynchedEntityData.defineId(AbstractBoat.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_ID_HAS_STEP_ENCHANT = SynchedEntityData.defineId(AbstractBoat.class, EntityDataSerializers.BOOLEAN);
 
 	private BoatMixin(EntityType<?> type, Level level) {
 		super(type, level);
@@ -52,8 +54,12 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 	private ItemStack boatEnchant$getPickResult(ItemStack original) {
 
 		if (getHasLandEnchant()) {
-			ResourceKey<Enchantment> LAND_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("land"));
-			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(LAND_ENCHANT_ID);
+			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.LAND_ENCHANT_ID);
+			entry.ifPresent(enchant -> original.enchant(enchant, 1));
+		}
+
+		if (getHasStepEnchant()) {
+			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.STEP_ENCHANT_ID);
 			entry.ifPresent(enchant -> original.enchant(enchant, 1));
 		}
 
@@ -67,9 +73,13 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 			ItemStack itemStack = new ItemStack(dropItem);
 
 			if (getHasLandEnchant()) {
-				ResourceKey<Enchantment> LAND_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("land"));
-				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(LAND_ENCHANT_ID);
+				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.LAND_ENCHANT_ID);
                 entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
+			}
+
+			if (getHasStepEnchant()) {
+				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.STEP_ENCHANT_ID);
+				entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
 			}
 
 			itemStack.set(DataComponents.CUSTOM_NAME, this.getCustomName());
@@ -77,17 +87,25 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 		}
 	}
 
+	@Override
+	public float maxUpStep() {
+		return (getHasStepEnchant() && this.getControllingPassenger() instanceof Player) ? 1.0f : 0.0f;
+	}
+
 	@Inject(method = "defineSynchedData", at = @At("TAIL"))
 	private void boatEnchant$defineSynchedData(CallbackInfo ci, @Local SynchedEntityData.Builder entityData) {
 		entityData.define(DATA_ID_HAS_LAND_ENCHANT, false);
+		entityData.define(DATA_ID_HAS_STEP_ENCHANT, false);
 	}
 
-	@Override
-	public void setHasLandEnchant(Boolean inputRight) {
-		entityData.set(DATA_ID_HAS_LAND_ENCHANT, inputRight);
+	public void setHasLandEnchant(Boolean hasLand) {
+		entityData.set(DATA_ID_HAS_LAND_ENCHANT, hasLand);
 	}
-
 	public Boolean getHasLandEnchant() {
 		return entityData.get(DATA_ID_HAS_LAND_ENCHANT);
 	}
+
+
+	public void setHasStepEnchant(Boolean hasStep) {entityData.set(DATA_ID_HAS_STEP_ENCHANT, hasStep);}
+	public Boolean getHasStepEnchant() {return entityData.get(DATA_ID_HAS_STEP_ENCHANT);}
 }
