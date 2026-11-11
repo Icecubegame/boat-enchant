@@ -4,15 +4,18 @@ import com.icecubegame.boatenchant.BoatEnchant;
 import com.icecubegame.boatenchant.BoatMixinAccessor;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Leashable;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
@@ -22,6 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -64,6 +70,28 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 		}
 
 		return original;
+	}
+
+	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+	private void boatEnchant$addAdditionalSaveData(CallbackInfo ci, @Local ValueOutput output) {
+		this.writeEnchantData(output, this.getHasLandEnchant(), this.getHasStepEnchant());
+	}
+
+	@Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+	private void boatEnchant$readAdditionalSaveData(CallbackInfo ci, @Local ValueInput input) {
+		this.readEnchantData(input);
+	}
+
+	private void readEnchantData(final ValueInput input) {
+		Boolean hasLandEnchant = input.read("hasLandEnchant", Codec.BOOL).orElse(false);
+		setHasLandEnchant(hasLandEnchant);
+		Boolean hasStepEnchant = input.read("hasStepEnchant", Codec.BOOL).orElse(false);
+		setHasStepEnchant(hasStepEnchant);
+	}
+
+	private void writeEnchantData(final ValueOutput output, final Boolean hasLandEnchant, final Boolean hasStepEnchant) {
+		output.store("hasLandEnchant", Codec.BOOL, hasLandEnchant);
+		output.store("hasStepEnchant", Codec.BOOL, hasStepEnchant);
 	}
 
 	@Override
