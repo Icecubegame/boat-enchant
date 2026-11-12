@@ -3,7 +3,7 @@
 	"package": "com.icecubegame.boatenchant.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"AbstractBoatRendererMixin", "BoatRenderStateMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

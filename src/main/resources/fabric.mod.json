@@ -23,7 +23,11 @@
 		]
 	},
 	"mixins": [
-		"boat-enchant.mixins.json"
+		"boat-enchant.mixins.json",
+		{
+			"config": "boat-enchant.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"depends": {
 		"fabricloader": ">=0.20.1",
