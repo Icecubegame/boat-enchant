@@ -133,6 +133,11 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
                 entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
 			}
 
+			if (getHasLandEnchant()) {
+				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchantment.CURSE_LAND);
+				entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
+			}
+
 			if (getHasStepEnchant()) {
 				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchantment.STEP);
 				entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
