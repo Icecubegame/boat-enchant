@@ -51,7 +51,7 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 			at = @At(value = "STORE", ordinal = 5))
 	private float boatEnchant$floatBoat(float invFriction) {
 		if (getHasLandEnchant()) {
-			return 0.9F;
+			return Math.max(0.9F, invFriction);
 		}
 		return invFriction;
 	}
