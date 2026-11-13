@@ -2,6 +2,7 @@ package com.icecubegame.boatenchant.mixin;
 
 import com.icecubegame.boatenchant.BoatEnchant;
 import com.icecubegame.boatenchant.BoatMixinAccessor;
+import com.icecubegame.boatenchant.enchantment.BoatEnchantment;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.Holder;
@@ -27,7 +28,7 @@ public abstract class BoatItemMixin {
 
         if (boat != null) {
             Optional<Holder.Reference<Enchantment>> entry;
-            entry = level.registryAccess().get(BoatEnchant.LAND_ENCHANT_ID);
+            entry = level.registryAccess().get(BoatEnchantment.LAND);
             if (entry.isPresent()) {
                 Holder.Reference<Enchantment> enchant = entry.get();
                 int levels =  EnchantmentHelper.getItemEnchantmentLevel(enchant, itemStack);
@@ -38,7 +39,7 @@ public abstract class BoatItemMixin {
                 }
             }
 
-            entry = level.registryAccess().get(BoatEnchant.STEP_ENCHANT_ID);
+            entry = level.registryAccess().get(BoatEnchantment.STEP);
             if (entry.isPresent()) {
                 Holder.Reference<Enchantment> enchant = entry.get();
                 int levels =  EnchantmentHelper.getItemEnchantmentLevel(enchant, itemStack);

@@ -1,5 +1,6 @@
 package com.icecubegame.boatenchant;
 
+import com.icecubegame.boatenchant.enchantment.BoatEnchantment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.core.Holder;
@@ -23,15 +24,13 @@ import java.util.Optional;
 public class BoatEnchant implements ModInitializer {
 	public static final String MOD_ID = "boat-enchant";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final ResourceKey<Enchantment> LAND_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("land"));
-	public static final ResourceKey<Enchantment> STEP_ENCHANT_ID = ResourceKey.create(Registries.ENCHANTMENT, BoatEnchant.id("step"));
 
 	@Override
 	public void onInitialize() {
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
 			if (BuiltInLootTables.BURIED_TREASURE.equals(key)) {
-				Optional<Holder.Reference<Enchantment>> landEntry = registries.get(LAND_ENCHANT_ID);
-				Optional<Holder.Reference<Enchantment>> stepEntry = registries.get(STEP_ENCHANT_ID);
+				Optional<Holder.Reference<Enchantment>> landEntry = registries.get(BoatEnchantment.LAND);
+				Optional<Holder.Reference<Enchantment>> stepEntry = registries.get(BoatEnchantment.STEP);
 
 				LootPool.Builder pool = LootPool.lootPool();
 

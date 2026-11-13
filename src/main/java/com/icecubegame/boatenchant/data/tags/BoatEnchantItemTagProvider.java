@@ -1,6 +1,7 @@
 package com.icecubegame.boatenchant.data.tags;
 
 import com.icecubegame.boatenchant.BoatEnchant;
+import com.icecubegame.boatenchant.enchantment.BoatEnchantment;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
@@ -22,8 +23,8 @@ public class BoatEnchantItemTagProvider extends FabricTagsProvider<Enchantment> 
     protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
         builder(EnchantmentTags.TREASURE)
                 .add(
-                        BoatEnchant.LAND_ENCHANT_ID,
-                        BoatEnchant.STEP_ENCHANT_ID
+                        BoatEnchantment.LAND,
+                        BoatEnchantment.STEP
                 );
     }
 }

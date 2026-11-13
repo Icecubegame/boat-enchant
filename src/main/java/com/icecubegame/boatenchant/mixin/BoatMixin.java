@@ -2,6 +2,7 @@ package com.icecubegame.boatenchant.mixin;
 
 import com.icecubegame.boatenchant.BoatEnchant;
 import com.icecubegame.boatenchant.BoatMixinAccessor;
+import com.icecubegame.boatenchant.enchantment.BoatEnchantment;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.serialization.Codec;
@@ -63,12 +64,12 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 	private ItemStack boatEnchant$getPickResult(ItemStack original) {
 
 		if (getHasLandEnchant()) {
-			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.LAND_ENCHANT_ID);
+			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchantment.LAND);
 			entry.ifPresent(enchant -> original.enchant(enchant, 1));
 		}
 
 		if (getHasStepEnchant()) {
-			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.STEP_ENCHANT_ID);
+			Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchantment.STEP);
 			entry.ifPresent(enchant -> original.enchant(enchant, 1));
 		}
 
@@ -106,12 +107,12 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 			ItemStack itemStack = new ItemStack(dropItem);
 
 			if (getHasLandEnchant()) {
-				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.LAND_ENCHANT_ID);
+				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchantment.LAND);
                 entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
 			}
 
 			if (getHasStepEnchant()) {
-				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchant.STEP_ENCHANT_ID);
+				Optional<Holder.Reference<Enchantment>> entry = this.registryAccess().get(BoatEnchantment.STEP);
 				entry.ifPresent(enchant -> itemStack.enchant(enchant, 1));
 			}
 
