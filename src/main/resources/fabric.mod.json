@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"com.icecubegame.boatenchant.client.BoatEnchantClient"
+		],
+		"fabric-datagen": [
+			"com.icecubegame.boatenchant.data.BoatEnchantDataGenerator"
 		]
 	},
 	"mixins": [

@@ -45,7 +45,7 @@ public abstract class AbstractBoatRendererMixin extends EntityRenderer<AbstractB
         BoatRenderStateMixinAccessor stateAccess = (BoatRenderStateMixinAccessor)state;
 
         if (stateAccess.getIsEnchanted()) {
-            instance.submitModel(model, state, poseStack, RenderTypes.entitySolidGlint(texture), lightCoords, OverlayTexture.NO_OVERLAY, outlineColor);
+            instance.submitModel(model, state, poseStack, RenderTypes.entitySolidGlint(texture), lightCoords, overlayCoords, outlineColor);
         } else {
             instance.submitModel(model, state, poseStack, texture, lightCoords, overlayCoords, outlineColor);
         }
