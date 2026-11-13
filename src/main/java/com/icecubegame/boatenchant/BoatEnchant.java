@@ -35,19 +35,13 @@ public class BoatEnchant implements ModInitializer {
 
 				LootPool.Builder pool = LootPool.lootPool();
 
-				if (landEntry.isPresent()) {
-					Holder.Reference<Enchantment> landEnchant = landEntry.get();
-					pool
-							.add(LootItem.lootTableItem(Items.BOOK)
-									.apply(new SetEnchantmentsFunction.Builder().withEnchantment(landEnchant, ContextIntProviders.exactly(1))));
-				}
+                landEntry.ifPresent(landEnchant -> pool
+                        .add(LootItem.lootTableItem(Items.BOOK)
+                                .apply(new SetEnchantmentsFunction.Builder().withEnchantment(landEnchant, ContextIntProviders.exactly(1)))));
 
-				if (stepEntry.isPresent()) {
-					Holder.Reference<Enchantment> stepEnchant = stepEntry.get();
-					pool
-							.add(LootItem.lootTableItem(Items.BOOK)
-									.apply(new SetEnchantmentsFunction.Builder().withEnchantment(stepEnchant, ContextIntProviders.exactly(1))));
-				}
+                stepEntry.ifPresent(stepEnchant -> pool
+                        .add(LootItem.lootTableItem(Items.BOOK)
+                                .apply(new SetEnchantmentsFunction.Builder().withEnchantment(stepEnchant, ContextIntProviders.exactly(1)))));
 
 				pool.setRolls(ContextIntProviders.exactly(1))
 						.when(LootItemRandomChanceCondition.randomChance(0.5f));

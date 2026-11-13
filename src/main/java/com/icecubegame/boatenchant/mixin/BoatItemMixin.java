@@ -23,7 +23,7 @@ import java.util.Optional;
 @Mixin(BoatItem.class)
 public abstract class BoatItemMixin {
     @ModifyReturnValue(method = "getBoat", at = @At("RETURN"))
-    private AbstractBoat boatEnchant$getBoat(AbstractBoat boat, @Local Level level, @Local ItemStack itemStack) {
+    private AbstractBoat boatEnchant$getBoat(AbstractBoat boat, @Local(argsOnly = true) Level level, @Local(argsOnly = true) ItemStack itemStack) {
 
         if (boat != null) {
             Optional<Holder.Reference<Enchantment>> entry;

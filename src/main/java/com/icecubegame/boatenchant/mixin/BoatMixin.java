@@ -29,6 +29,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -38,7 +39,9 @@ import java.util.Optional;
 
 @Mixin(AbstractBoat.class)
 public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccessor {
-	private static final EntityDataAccessor<Boolean> DATA_ID_HAS_LAND_ENCHANT = SynchedEntityData.defineId(AbstractBoat.class, EntityDataSerializers.BOOLEAN);
+	@Unique
+    private static final EntityDataAccessor<Boolean> DATA_ID_HAS_LAND_ENCHANT = SynchedEntityData.defineId(AbstractBoat.class, EntityDataSerializers.BOOLEAN);
+	@Unique
 	private static final EntityDataAccessor<Boolean> DATA_ID_HAS_STEP_ENCHANT = SynchedEntityData.defineId(AbstractBoat.class, EntityDataSerializers.BOOLEAN);
 
 	private BoatMixin(EntityType<?> type, Level level) {
@@ -82,14 +85,16 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 		this.readEnchantData(input);
 	}
 
-	private void readEnchantData(final ValueInput input) {
+	@Unique
+    private void readEnchantData(final ValueInput input) {
 		Boolean hasLandEnchant = input.read("hasLandEnchant", Codec.BOOL).orElse(false);
 		setHasLandEnchant(hasLandEnchant);
 		Boolean hasStepEnchant = input.read("hasStepEnchant", Codec.BOOL).orElse(false);
 		setHasStepEnchant(hasStepEnchant);
 	}
 
-	private void writeEnchantData(final ValueOutput output, final Boolean hasLandEnchant, final Boolean hasStepEnchant) {
+	@Unique
+    private void writeEnchantData(final ValueOutput output, final Boolean hasLandEnchant, final Boolean hasStepEnchant) {
 		output.store("hasLandEnchant", Codec.BOOL, hasLandEnchant);
 		output.store("hasStepEnchant", Codec.BOOL, hasStepEnchant);
 	}
@@ -121,19 +126,26 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 	}
 
 	@Inject(method = "defineSynchedData", at = @At("TAIL"))
-	private void boatEnchant$defineSynchedData(CallbackInfo ci, @Local SynchedEntityData.Builder entityData) {
+	private void boatEnchant$defineSynchedData(CallbackInfo ci, @Local(argsOnly = true) SynchedEntityData.Builder entityData) {
 		entityData.define(DATA_ID_HAS_LAND_ENCHANT, false);
 		entityData.define(DATA_ID_HAS_STEP_ENCHANT, false);
 	}
 
-	public void setHasLandEnchant(Boolean hasLand) {
+	@Override
+    public void setHasLandEnchant(Boolean hasLand) {
 		entityData.set(DATA_ID_HAS_LAND_ENCHANT, hasLand);
 	}
-	public Boolean getHasLandEnchant() {
+	@Override
+    public Boolean getHasLandEnchant() {
 		return entityData.get(DATA_ID_HAS_LAND_ENCHANT);
 	}
 
-
-	public void setHasStepEnchant(Boolean hasStep) {entityData.set(DATA_ID_HAS_STEP_ENCHANT, hasStep);}
-	public Boolean getHasStepEnchant() {return entityData.get(DATA_ID_HAS_STEP_ENCHANT);}
+	@Override
+    public void setHasStepEnchant(Boolean hasStep) {
+		entityData.set(DATA_ID_HAS_STEP_ENCHANT, hasStep);
+	}
+	@Override
+    public Boolean getHasStepEnchant() {
+		return entityData.get(DATA_ID_HAS_STEP_ENCHANT);
+	}
 }
