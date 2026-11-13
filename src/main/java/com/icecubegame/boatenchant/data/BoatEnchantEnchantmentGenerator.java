@@ -18,6 +18,7 @@ public class BoatEnchantEnchantmentGenerator extends FabricDynamicRegistryProvid
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         register(context, BoatEnchantment.LAND, BoatEnchantment.createLandEnchantment(context));
+        register(context, BoatEnchantment.CURSE_LAND, BoatEnchantment.createCurseOfLandEnchantment(context));
         register(context, BoatEnchantment.STEP, BoatEnchantment.createStepEnchantment(context));
     }
 

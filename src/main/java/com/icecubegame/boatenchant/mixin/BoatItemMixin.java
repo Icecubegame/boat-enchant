@@ -39,6 +39,17 @@ public abstract class BoatItemMixin {
                 }
             }
 
+            entry = level.registryAccess().get(BoatEnchantment.CURSE_LAND);
+            if (entry.isPresent()) {
+                Holder.Reference<Enchantment> enchant = entry.get();
+                int levels =  EnchantmentHelper.getItemEnchantmentLevel(enchant, itemStack);
+                if (levels > 0) {
+                    if (boat instanceof BoatMixinAccessor) {
+                        ((BoatMixinAccessor)boat).setHasCurseOfLandEnchant(true);
+                    }
+                }
+            }
+
             entry = level.registryAccess().get(BoatEnchantment.STEP);
             if (entry.isPresent()) {
                 Holder.Reference<Enchantment> enchant = entry.get();

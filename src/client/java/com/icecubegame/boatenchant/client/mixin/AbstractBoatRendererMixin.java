@@ -56,6 +56,6 @@ public abstract class AbstractBoatRendererMixin extends EntityRenderer<AbstractB
         BoatRenderStateMixinAccessor stateAccess = (BoatRenderStateMixinAccessor)state;
         BoatMixinAccessor boatAccessor = (BoatMixinAccessor)entity;
 
-        stateAccess.setIsEnchanted(boatAccessor.getHasLandEnchant() || boatAccessor.getHasStepEnchant());
+        stateAccess.setIsEnchanted(boatAccessor.getHasLandEnchant() || boatAccessor.getHasCurseOfLandEnchant() || boatAccessor.getHasStepEnchant());
     }
 }

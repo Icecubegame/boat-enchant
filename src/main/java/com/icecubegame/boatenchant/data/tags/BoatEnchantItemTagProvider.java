@@ -24,7 +24,13 @@ public class BoatEnchantItemTagProvider extends FabricTagsProvider<Enchantment> 
         builder(EnchantmentTags.TREASURE)
                 .add(
                         BoatEnchantment.LAND,
-                        BoatEnchantment.STEP
+                        BoatEnchantment.STEP,
+                        BoatEnchantment.CURSE_LAND
+                );
+
+        builder(EnchantmentTags.CURSE)
+                .add(
+                        BoatEnchantment.CURSE_LAND
                 );
     }
 }

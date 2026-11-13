@@ -1,9 +1,12 @@
 package com.icecubegame.boatenchant;
 
 public interface BoatMixinAccessor {
-    void setHasLandEnchant(Boolean hasLand);
-    Boolean getHasLandEnchant();
+    void setHasLandEnchant(boolean hasLand);
+    boolean getHasLandEnchant();
 
-    void setHasStepEnchant(Boolean hasStep);
-    Boolean getHasStepEnchant();
+    void setHasCurseOfLandEnchant(boolean hasCurseOfLand);
+    boolean getHasCurseOfLandEnchant();
+
+    void setHasStepEnchant(boolean hasStep);
+    boolean getHasStepEnchant();
 }

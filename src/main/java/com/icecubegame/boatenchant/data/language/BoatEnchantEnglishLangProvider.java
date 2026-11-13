@@ -16,6 +16,7 @@ public class BoatEnchantEnglishLangProvider extends FabricLanguageProvider {
     @Override
     public void generateTranslations(HolderLookup.Provider holderLookup, TranslationBuilder translationBuilder) {
         translationBuilder.addEnchantment(BoatEnchantment.LAND, "Land");
+        translationBuilder.addEnchantment(BoatEnchantment.CURSE_LAND, "Curse of Land");
         translationBuilder.addEnchantment(BoatEnchantment.STEP, "Step");
     }
 }
