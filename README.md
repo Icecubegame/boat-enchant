@@ -1,4 +1,4 @@
-# Boat Enchant
+# Boat Enchant (Fabric)
 
 Adds the Land enchantment to boats. Basically it made your speed on land same as on water. You can find the enchantment in buried treasure.
 

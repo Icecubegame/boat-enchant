@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "boat-enchant",
+	"id": "boatenchant",
 	"version": "${version}",
 	"name": "Boat Enchant",
 	"description": "Adds the Land enchantment to boats. Basically it made your speed on land same as on water. You can find the enchantment in buried treasure.",
@@ -12,7 +12,7 @@
 		"sources": "https://github.com/Icecubegame/boat-enchant"
 	},
 	"license": "MIT",
-	"icon": "assets/boat-enchant/icon.png",
+	"icon": "assets/boatenchant/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -26,9 +26,9 @@
 		]
 	},
 	"mixins": [
-		"boat-enchant.mixins.json",
+		"boatenchant.mixins.json",
 		{
-			"config": "boat-enchant.client.mixins.json",
+			"config": "boatenchant.client.mixins.json",
 			"environment": "client"
 		}
 	],

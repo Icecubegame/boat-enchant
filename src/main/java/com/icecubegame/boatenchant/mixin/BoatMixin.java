@@ -1,5 +1,6 @@
 package com.icecubegame.boatenchant.mixin;
 
+import com.icecubegame.boatenchant.BoatEnchant;
 import com.icecubegame.boatenchant.BoatMixinAccessor;
 import com.icecubegame.boatenchant.enchantment.BoatEnchantment;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -107,19 +108,41 @@ public abstract class BoatMixin extends VehicleEntity implements BoatMixinAccess
 
 	@Unique
     private void readEnchantData(final ValueInput input) {
-		Boolean hasLandEnchant = input.read("hasLandEnchant", Codec.BOOL).orElse(false);
-		setHasLandEnchant(hasLandEnchant);
-		Boolean hasCurseLandEnchant = input.read("hasCurseLandEnchant", Codec.BOOL).orElse(false);
-		setHasCurseOfLandEnchant(hasCurseLandEnchant);
-		Boolean hasStepEnchant = input.read("hasStepEnchant", Codec.BOOL).orElse(false);
-		setHasStepEnchant(hasStepEnchant);
+		final String ATTACHMENTS_NBT_KEY = "neoforge:attachments";
+		Optional<ValueInput> attachmentsResult = input.child(ATTACHMENTS_NBT_KEY);
+		if (attachmentsResult.isPresent()) {
+			ValueInput attachments = attachmentsResult.get();
+			Optional<ValueInput> enchantmentsResult = attachments.child(BoatEnchant.id("boat_enchantments").toString());
+			if (enchantmentsResult.isPresent()) {
+				ValueInput enchantments = enchantmentsResult.get();
+				this.setHasLandEnchant(enchantments.read("has_land", Codec.BOOL).orElse(false));
+				this.setHasCurseOfLandEnchant(enchantments.read("has_curse_land", Codec.BOOL).orElse(false));
+				this.setHasStepEnchant(enchantments.read("has_step", Codec.BOOL).orElse(false));
+			}
+		} else {
+			readOldEnchantData(input);
+		}
+	}
+
+	@Deprecated
+	@Unique
+	private void readOldEnchantData(final ValueInput input) {
+		Optional<Boolean> hasLandEnchant = input.read("hasLandEnchant", Codec.BOOL);
+		hasLandEnchant.ifPresent(has -> this.setHasLandEnchant(has));
+		Optional<Boolean> hasCurseLandEnchant = input.read("hasCurseLandEnchant", Codec.BOOL);
+		hasCurseLandEnchant.ifPresent(has -> this.setHasCurseOfLandEnchant(has));
+		Optional<Boolean> hasStepEnchant = input.read("hasStepEnchant", Codec.BOOL);
+		hasStepEnchant.ifPresent(has -> this.setHasStepEnchant(has));
 	}
 
 	@Unique
     private void writeEnchantData(final ValueOutput output, final Boolean hasLandEnchant, final Boolean hasCurseLandEnchant, final Boolean hasStepEnchant) {
-		output.store("hasLandEnchant", Codec.BOOL, hasLandEnchant);
-		output.store("hasCurseLandEnchant", Codec.BOOL, hasCurseLandEnchant);
-		output.store("hasStepEnchant", Codec.BOOL, hasStepEnchant);
+		final String ATTACHMENTS_NBT_KEY = "neoforge:attachments";
+		ValueOutput attachments = output.child(ATTACHMENTS_NBT_KEY);
+		ValueOutput enchantments = attachments.child(BoatEnchant.id("boat_enchantments").toString());
+		enchantments.store("has_land", Codec.BOOL, hasLandEnchant);
+		enchantments.store("has_curse_land", Codec.BOOL, hasCurseLandEnchant);
+		enchantments.store("has_step", Codec.BOOL, hasStepEnchant);
 	}
 
 	@Override

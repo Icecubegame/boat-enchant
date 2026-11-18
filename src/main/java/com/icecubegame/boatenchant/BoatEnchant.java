@@ -22,7 +22,7 @@ import java.util.Optional;
 
 
 public class BoatEnchant implements ModInitializer {
-	public static final String MOD_ID = "boat-enchant";
+	public static final String MOD_ID = "boatenchant";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
